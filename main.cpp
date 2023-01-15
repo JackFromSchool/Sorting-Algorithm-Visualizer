@@ -6,20 +6,25 @@
 
 
 int main() {
-    InitWindow(1000, 500, "Sorting Algorithms");
-    SetTargetFPS(360);
+
+    const int WINDOW_HEIGHT = 1080;
+    const int WINDOW_WIDTH = 1920;
+
+    InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Sorting Algorithms");
+    ToggleFullscreen();
+    SetTargetFPS(1000);
    
-    std::array<int, 100> mainArray;
+    std::array<int, 320> mainArray;
 
     // Create an array with values 1-100 randomly in an array
     srand(time(NULL));
     int temp;
     bool valid = false;
-    for(int i = 0; i < 100; i++) {
+    for(int i = 0; i < mainArray.size(); i++) {
         do {
-            temp = (rand()%100)+1;
+            temp = (rand()%mainArray.size())+1;
             valid = true;
-            for(int i = 0; i < 100; i++) {
+            for(int i = 0; i < mainArray.size(); i++) {
                 if(temp == mainArray[i]) {
                     valid = false;
                 }
@@ -35,6 +40,8 @@ int main() {
     bool sorted = false;
 
     while(!WindowShouldClose()) {
+        const int BAR_WIDTH = WINDOW_WIDTH/mainArray.size();
+        const int BAR_HEIGHT = WINDOW_HEIGHT/mainArray.size();
 
         BeginDrawing();
 
@@ -43,9 +50,9 @@ int main() {
         if(!sorted) {
         for(int i = 0; i < mainArray.size(); i++) {
             if(step == i || smallestIndex == i) {
-                DrawRectangle(i*10, 500-mainArray[i]*5, 9, mainArray[i]*5, RED);
+                DrawRectangle(i*BAR_WIDTH, WINDOW_HEIGHT-mainArray[i]*BAR_HEIGHT, BAR_WIDTH-1, mainArray[i]*BAR_HEIGHT, RED);
             } else {
-                DrawRectangle(i*10, 500-mainArray[i]*5, 9, mainArray[i]*5, WHITE);
+                DrawRectangle(i*BAR_WIDTH, WINDOW_HEIGHT-mainArray[i]*BAR_HEIGHT, BAR_WIDTH-1, mainArray[i]*BAR_HEIGHT, WHITE);
             }
         }
 
@@ -56,7 +63,7 @@ int main() {
 
         step++;
 
-        if(step == 100) {
+        if(step == mainArray.size()) {
             // Swap the smallest with the current
             int swap;
             swap = mainArray[smallestIndex];
@@ -68,7 +75,7 @@ int main() {
             step = sortedSize;
             smallestIndex = step;
             // See if we've made it through the array
-            if(sortedSize == 99) {
+            if(sortedSize == mainArray.size()-1) {
                 sorted = true;
                 step = 0;
             }
@@ -77,16 +84,16 @@ int main() {
         } else {
             for(int i = 0; i < mainArray.size(); i++) {
                 if(step == i) {
-                    DrawRectangle(i*10, 500-mainArray[i]*5, 9, mainArray[i]*5, RED);
+                    DrawRectangle(i*BAR_WIDTH, WINDOW_HEIGHT-mainArray[i]*BAR_HEIGHT, BAR_WIDTH-1, mainArray[i]*BAR_HEIGHT, RED);
                 } else if (step > i) {
-                    DrawRectangle(i*10, 500-mainArray[i]*5, 9, mainArray[i]*5, GREEN);
+                    DrawRectangle(i*BAR_WIDTH, WINDOW_HEIGHT-mainArray[i]*BAR_HEIGHT, BAR_WIDTH-1, mainArray[i]*BAR_HEIGHT, GREEN);
                 } else {
-                    DrawRectangle(i*10, 500-mainArray[i]*5, 9, mainArray[i]*5, WHITE);
+                    DrawRectangle(i*BAR_WIDTH, WINDOW_HEIGHT-mainArray[i]*BAR_HEIGHT, BAR_WIDTH-1, mainArray[i]*BAR_HEIGHT, WHITE);
                 }
             }
 
             // Fake checking to see if the array is sorted cause I know it is
-            if(step != 99) {
+            if(step != mainArray.size()-1) {
                 step++;
             }
 
