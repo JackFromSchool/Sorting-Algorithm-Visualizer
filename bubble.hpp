@@ -1,9 +1,8 @@
 #include "raylib.h"
 #include <array>
 
-void selectionSort(const int WINDOW_WIDTH, const int WINDOW_HEIGHT, std::array<int, 100>& mainArray) {
-   int step = 0;
-   int smallestIndex = 0;
+void bubbleSort(const int WINDOW_WIDTH, const int WINDOW_HEIGHT, std::array<int, 100>& mainArray) {
+   int step = 1;
    int sortedSize = 0;
    bool sorted = false;
 
@@ -18,31 +17,28 @@ void selectionSort(const int WINDOW_WIDTH, const int WINDOW_HEIGHT, std::array<i
 
    if(!sorted) {
    for(int i = 0; i < mainArray.size(); i++) {
-      if(step == i || smallestIndex == i) {
+      if(step == i) {
             DrawRectangle(i*BAR_WIDTH, WINDOW_HEIGHT-mainArray[i]*BAR_HEIGHT, BAR_WIDTH-1, mainArray[i]*BAR_HEIGHT, RED);
       } else {
             DrawRectangle(i*BAR_WIDTH, WINDOW_HEIGHT-mainArray[i]*BAR_HEIGHT, BAR_WIDTH-1, mainArray[i]*BAR_HEIGHT, WHITE);
       }
    }
 
-   // Check to see if we found a new smallest value
-   if(mainArray[step] < mainArray[smallestIndex]) {
-      smallestIndex = step;
+   // Swap if the value before step is bigger than step
+   if(mainArray[step-1] > mainArray[step]) {
+      int swap;
+      swap = mainArray[step-1];
+      mainArray[step-1] = mainArray[step];
+      mainArray[step] = swap;
    }
 
    step++;
 
-   if(step == mainArray.size()) {
-      // Swap the smallest with the current
-      int swap;
-      swap = mainArray[smallestIndex];
-      mainArray[smallestIndex] = mainArray[sortedSize];
-      mainArray[sortedSize] = swap;
-
-      // Prepare step for the next run throught the array
+   if(step == mainArray.size()-sortedSize) {
+      // Return to the start and increase our known sorted area
       sortedSize++;
-      step = sortedSize;
-      smallestIndex = step;
+      step = 1;
+
       // See if we've made it through the array
       if(sortedSize == mainArray.size()-1) {
             sorted = true;

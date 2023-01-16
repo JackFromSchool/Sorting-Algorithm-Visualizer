@@ -3,7 +3,9 @@
 #include <iostream>
 #include "raylib.h"
 
+#include "button.hpp"
 #include "selection.hpp"
+#include "bubble.hpp"
 
 int main() {
 
@@ -12,9 +14,9 @@ int main() {
 
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Sorting Algorithms");
     ToggleFullscreen();
-    SetTargetFPS(1000);
+    SetTargetFPS(144);
    
-    std::array<int, 320> mainArray;
+    std::array<int, 100> mainArray;
 
     // Create an array with values 1-100 randomly in an array
     srand(time(NULL));
@@ -34,7 +36,19 @@ int main() {
         valid = false;
     }
 
-    selectionSort(WINDOW_WIDTH, WINDOW_HEIGHT, mainArray);
+    Button bubble(10, 10, 100, "Bubble Sort");
+    Button selection(10, 120, 100, "Selection Sort");
+
+    while(!WindowShouldClose()) {
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
+        bubble.drawButton();
+        selection.drawButton();
+        EndDrawing();
+
+        if(bubble.isPressed()) bubbleSort(WINDOW_WIDTH, WINDOW_HEIGHT, mainArray);
+        if(selection.isPressed()) selectionSort(WINDOW_WIDTH, WINDOW_HEIGHT, mainArray);
+    }
 
     CloseWindow();
 }
