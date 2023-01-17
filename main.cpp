@@ -6,6 +6,7 @@
 #include "button.hpp"
 #include "selection.hpp"
 #include "bubble.hpp"
+#include "insertion.hpp"
 
 int main() {
 
@@ -38,16 +39,19 @@ int main() {
 
     Button bubble(10, 10, 100, "Bubble Sort");
     Button selection(10, 120, 100, "Selection Sort");
+    Button insertion(10, 230, 100, "Insertion Sort");
 
     while(!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
         bubble.drawButton();
         selection.drawButton();
+        insertion.drawButton();
         EndDrawing();
 
         if(bubble.isPressed()) bubbleSort(WINDOW_WIDTH, WINDOW_HEIGHT, mainArray);
         if(selection.isPressed()) selectionSort(WINDOW_WIDTH, WINDOW_HEIGHT, mainArray);
+        if(insertion.isPressed()) insertionSort(WINDOW_WIDTH, WINDOW_HEIGHT, mainArray);
     }
 
     CloseWindow();
